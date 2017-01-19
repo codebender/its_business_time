@@ -24,16 +24,41 @@ describe "time extensions" do
     assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
   end
 
-
   it "know the beginning of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
     expecting = Time.parse("August 17th, 2010, 9:00 am")
     assert_equal expecting, Time.beginning_of_workday(first)
   end
 
+  it "knows the beginning of the day for an instance, when work hours are configured" do
+    BusinessTime::Config.work_hours = {
+      'mon' =>["9:00","17:00"],
+      'tue' =>["9:00","17:00"],
+      'wed' =>["5:00","19:00"],
+      'thu' =>["9:00","17:00"],
+      'fri' =>["9:00","17:00"]
+    }
+    first = Time.parse("January 18th, 2017, 11:50 am")
+    expecting = Time.parse("January 18th, 2017, 5:00 am")
+    assert_equal expecting, Time.beginning_of_workday(first)
+  end
+
   it "know the end of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
     expecting = Time.parse("August 17th, 2010, 5:00 pm")
+    assert_equal expecting, Time.end_of_workday(first)
+  end
+
+  it "knows the end of the day for an instance, when work hours are configured" do
+    BusinessTime::Config.work_hours = {
+      'mon' =>["9:00","17:00"],
+      'tue' =>["9:00","17:00"],
+      'wed' =>["5:00","19:00"],
+      'thu' =>["9:00","17:00"],
+      'fri' =>["9:00","17:00"]
+    }
+    first = Time.parse("January 18th, 2017, 11:50 am")
+    expecting = Time.parse("January 18th, 2017, 7:00 pm")
     assert_equal expecting, Time.end_of_workday(first)
   end
 

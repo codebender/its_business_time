@@ -27,7 +27,7 @@ module BusinessTime
 
       def work_hours=(work_hours)
         work_hours.each_with_object(config[:work_hours] = {}) do |(day, hours), c|
-          c[day] = hours.map do |time|
+          c[day.to_sym] = hours.map do |time|
             ParsedTime.parse(time)
           end
         end
