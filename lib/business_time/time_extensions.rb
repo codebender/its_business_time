@@ -30,19 +30,6 @@ module BusinessTime
         change_business_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
       end
 
-      # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
-      # this time falls outside of normal business hours.
-      def workday?(day)
-        ActiveSupport::Deprecation.warn("`Time.workday?(time)` is deprecated. Please use `time.workday?`")
-        day.workday?
-      end
-
-      # True if this time falls on a weekday.
-      def weekday?(day)
-        ActiveSupport::Deprecation.warn("`Time.weekday?(time)` is deprecated. Please use `time.weekday?`")
-        day.weekday?
-      end
-
       def before_business_hours?(time)
         time.to_i < beginning_of_workday(time).to_i
       end
