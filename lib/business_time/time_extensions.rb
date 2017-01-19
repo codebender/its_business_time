@@ -3,12 +3,17 @@ module BusinessTime
     # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
     # this time falls outside of normal business hours.
     def workday?
-      weekday? && !BusinessTime::Config.holidays.include?(to_date)
+      weekday? && !holiday?
     end
 
     # True if this time falls on a weekday.
     def weekday?
       BusinessTime::Config.weekdays.include?(wday)
+    end
+
+    # True if this time falls on a configured holiday.
+    def holiday?
+      BusinessTime::Config.holidays.include?(to_date)
     end
 
     module ClassMethods
@@ -23,7 +28,7 @@ module BusinessTime
 
       # Gives the time at the beginning of the workday, assuming that this time
       # falls on a workday.
-      # Note: It pretends that this day is a workday whether or not it really is a
+      # Note: It assumes that this day is a workday whether or not it really is a
       # workday.
       def beginning_of_workday(day)
         beginning_of_workday = BusinessTime::Config.beginning_of_workday(day)
