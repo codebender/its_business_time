@@ -1,7 +1,13 @@
-BusinessTime::Config.load("#{Rails.root}/config/business_time.yml")
-
-# or you can configure it manually:  look at me!  I'm Tim Ferriss!
-#  BusinessTime::Config.beginning_of_workday = "10:00 am"
-#  BusinessTime::Config.end_of_workday = "11:30 am"
-#  BusinessTime::Config.holidays << Date.parse("August 4th, 2010")
-
+ItsBusinessTime.configure do |c|
+  c.time_zone = Time.find_zone!('Mountain Time (US & Canada)')
+  c.work_hours = {
+    tue: [ItsBusinessTime::ParsedTime.new(9),ItsBusinessTime::ParsedTime.new(17)],
+    wed: [ItsBusinessTime::ParsedTime.new(5),ItsBusinessTime::ParsedTime.new(19)],
+    thu: [ItsBusinessTime::ParsedTime.new(9),ItsBusinessTime::ParsedTime.new(17)]
+  }
+  c.holidays = [
+    Date.parse("January 18, 2017"), 
+    Date.parse("July 4, 2017"),
+    Date.parse("December 25, 2017")
+  ]
+end

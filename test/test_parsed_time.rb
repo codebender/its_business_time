@@ -1,6 +1,6 @@
 require File.expand_path('../helper', __FILE__)
 
-module BusinessTime
+module ItsBusinessTime
   describe ParsedTime do
     describe "new" do
       it "sets hour, min, sec" do
@@ -86,4 +86,3 @@ module BusinessTime
     end
   end
 end
-
