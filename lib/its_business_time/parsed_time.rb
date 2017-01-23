@@ -1,4 +1,4 @@
-module BusinessTime
+module ItsBusinessTime
   class ParsedTime
     include Comparable
 

@@ -1,11 +1,10 @@
-# This generator simply drops the business_time.rb and business_time.yml file
+# This generator simply drops the its_business_time.rb and its_business_time.yml file
 # into the appropate places in a rails app to configure and initialize the
 # data.  Once generated, these files are yours to modify.
-class BusinessTimeConfigGenerator < Rails::Generator::Base
+class ItsBusinessTimeConfigGenerator < Rails::Generator::Base
   def manifest
     record do |m|
-      m.template('business_time.rb', "config/initializers/business_time.rb")
-      m.template('business_time.yml', "config/business_time.yml")
+      m.template('its_business_time.rb', "config/initializers/its_business_time.rb")
     end
   end
 end
