@@ -23,7 +23,7 @@ describe "date extensions" do
     assert(Date.parse("April 8, 2010").weekday?)
     refute(Date.parse("April 9, 2010").weekday?)
     refute(Date.parse("April 10, 2010").weekday?)
-    assert(Date.parse("April 12, 2010").weekday?)
+    assert(Date.parse("April 11, 2010").weekday?)
   end
 
   it "includes holidays as a non-workday" do

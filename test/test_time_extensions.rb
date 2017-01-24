@@ -77,7 +77,7 @@ describe "time extensions" do
     assert_equal expecting, first.end_of_workday
   end
 
-  it 'calculates the next beginning of a work day, when outside of business hours' do
+  it 'calculates the next beginning of a work day, when not a work day' do
     ItsBusinessTime.configure do |c|
       c.work_hours = {
         tue: ['9:00 am', '5:00 pm'],
@@ -91,6 +91,40 @@ describe "time extensions" do
     refute(current_time.during_business_hours?)
 
     expecting = Time.parse("January 24th, 2017, 9:00 am UTC")
+    assert_equal expecting, current_time.next_beginning_of_workday
+  end
+
+  it 'calculates the next beginning of a work day, when before hours on a work day' do
+    ItsBusinessTime.configure do |c|
+      c.work_hours = {
+        tue: ['9:00 am', '5:00 pm'],
+        wed: ['5:00 am', '7:00 pm'],
+        thu: ['9:00 am', '5:00 pm']
+      }
+    end
+
+    current_time = Time.parse("2017-01-24 6:00 am UTC")
+
+    refute(current_time.during_business_hours?)
+
+    expecting = Time.parse("January 24th, 2017, 9:00 am UTC")
+    assert_equal expecting, current_time.next_beginning_of_workday
+  end
+
+  it 'calculates the next beginning of a work day, when after hours on a work day' do
+    ItsBusinessTime.configure do |c|
+      c.work_hours = {
+        tue: ['9:00 am', '5:00 pm'],
+        wed: ['5:00 am', '7:00 pm'],
+        thu: ['9:00 am', '5:00 pm']
+      }
+    end
+
+    current_time = Time.parse("2017-01-24 6:00 pm UTC")
+
+    refute(current_time.during_business_hours?)
+
+    expecting = Time.parse("January 25th, 2017, 5:00 am UTC")
     assert_equal expecting, current_time.next_beginning_of_workday
   end
 
