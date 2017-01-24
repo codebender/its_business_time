@@ -32,16 +32,31 @@ module ItsBusinessTime
       tz_adjusted.change(hour: eowd.hour, min: eowd.min, sec: eowd.sec)
     end
 
-    def next_beginning_of_workday(time = tz_adjusted)
-      return next_beginning_of_workday(time + 1.day) unless time.workday?
+    def next_beginning_of_workday
+      return tz_adjusted.beginning_of_workday if tz_adjusted.before_business_hours?
 
-      time.beginning_of_workday
+
+
+      next_business_day =  tz_adjusted.after_business_hours? ? tz_adjusted.clone + 1.day : tz_adjusted.clone
+      while !next_business_day.workday?
+        next_business_day += 1.day
+      end
+
+      return next_business_day.beginning_of_workday
     end
 
     private
 
     def tz_adjusted
       in_time_zone(ItsBusinessTime.configuration.time_zone)
+    end
+
+    def before_business_hours?
+      workday? && self < beginning_of_workday
+    end
+
+    def after_business_hours?
+      workday? && self > end_of_workday
     end
   end
 end
