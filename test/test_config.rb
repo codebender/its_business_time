@@ -1,6 +1,10 @@
 require File.expand_path('../helper.rb', __FILE__)
 
 describe "config" do
+  before do
+    ItsBusinessTime.configuration = ItsBusinessTime::Config.new
+  end
+
   it "keeps track of holidays" do
     assert ItsBusinessTime.configuration.holidays.empty?
     daves_birthday = Date.parse("August 4th, 1969")
@@ -72,5 +76,18 @@ describe "config" do
     now = Time.parse("January 23rd, 2017, 11:50 am Mountain Time (US & Canada)")
     expecting = ItsBusinessTime::ParsedTime.new(17)
     assert_equal expecting, ItsBusinessTime.configuration.end_of_workday(now)
+  end
+
+  it 'keeps work_week up to date with work_hours' do
+    assert_equal [1,2,3,4,5], ItsBusinessTime.configuration.work_week.to_a.sort
+
+    ItsBusinessTime.configure do |c|
+      c.work_hours = {
+        mon: ['6:00 am', '5:00 pm']
+      }
+      c.time_zone = 'Mountain Time (US & Canada)'
+    end
+
+    assert_equal [1], ItsBusinessTime.configuration.work_week.to_a.sort
   end
 end

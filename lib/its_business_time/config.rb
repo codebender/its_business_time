@@ -35,9 +35,10 @@ module ItsBusinessTime
     end
 
     def work_hours=(work_hrs)
+      @week = nil
       @work_hours = {}
       work_hrs.each do |dow, times|
-        @work_hours[dow] = times.map{ |time| ItsBusinessTime::ParsedTime.parse(time) }
+        @work_hours[dow] = times.map { |time| ItsBusinessTime::ParsedTime.parse(time) }
       end
     end
 
